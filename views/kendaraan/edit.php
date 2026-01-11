@@ -1,5 +1,4 @@
 <?php
-// 1. PINDAHKAN SEMUA LOGIKA PHP KE PALING ATAS
 ob_start();
 session_start();
 
@@ -9,7 +8,6 @@ $db = $database->getConnection();
 
 $id = $_GET['id'] ?? 0;
 
-// Ambil data kendaraan lama
 $query = "SELECT * FROM kendaraan WHERE id = :id";
 $stmt = $db->prepare($query);
 $stmt->bindParam(':id', $id);
@@ -21,7 +19,6 @@ if (!$kendaraan) {
     exit();
 }
 
-// Proses jika form dikirim
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $jenis = $_POST['jenis'];
     $merk = $_POST['merk'];
@@ -31,8 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kapasitas = $_POST['kapasitas']; 
     $harga_sewa = $_POST['harga_sewa']; 
     $status = $_POST['status'];
-    
-    // Cek duplikat plat nomor (kecuali untuk ID ini sendiri)
+
     $check_query = "SELECT id FROM kendaraan WHERE plat_nomor = :plat_nomor AND id != :id";
     $check_stmt = $db->prepare($check_query);
     $check_stmt->bindParam(':plat_nomor', $plat_nomor);
@@ -42,9 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($check_stmt->rowCount() > 0) {
         $error = "Nomor plat <strong>$plat_nomor</strong> sudah digunakan oleh kendaraan lain!";
     } else {
-        $gambar = $kendaraan['gambar']; // Default gunakan gambar lama
+        $gambar = $kendaraan['gambar']; 
 
-        // Proses Upload Gambar Baru jika ada
         if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
             $file_tmp = $_FILES['gambar']['tmp_name'];
             $file_name_raw = $_FILES['gambar']['name'];
@@ -56,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $upload_dir = '../../assets/img/';
                 
                 if (move_uploaded_file($file_tmp, $upload_dir . $new_file_name)) {
-                    // Hapus gambar lama jika bukan default
                     if ($kendaraan['gambar'] != 'default.jpg' && file_exists($upload_dir . $kendaraan['gambar'])) {
                         unlink($upload_dir . $kendaraan['gambar']);
                     }
@@ -95,7 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// 2. BARU TAMPILKAN HEADER DAN HTML
 $page_title = "Edit Kendaraan";
 $breadcrumb = [
     ['text' => 'Master Data', 'link' => '#', 'active' => false],
@@ -188,7 +181,6 @@ require_once '../../includes/header.php';
 </div>
 
 <script>
-// Preview gambar saat dipilih
 document.getElementById('gambarInput').onchange = evt => {
     const [file] = document.getElementById('gambarInput').files;
     if (file) {
