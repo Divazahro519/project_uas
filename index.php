@@ -188,14 +188,6 @@ $status_kendaraan = $db->query("SELECT status, COUNT(*) as jumlah FROM kendaraan
                     <?php endforeach; ?>
                 </div>
             </div>
-
-            <div class="card border-0 shadow-sm rounded-4 bg-primary text-white">
-                <div class="card-body">
-                    <h6 class="fw-bold"><i class="bi bi-info-circle me-2"></i>Sewa Motor v1.0</h6>
-                    <p class="small mb-0 opacity-75">Sistem informasi penyewaan motor berbasis web. Kelola transaksi, armada, dan pelanggan dalam satu dashboard.</p>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>

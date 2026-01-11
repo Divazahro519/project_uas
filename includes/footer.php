@@ -4,10 +4,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; <?php echo date('Y'); ?> Sewa Kendaraan. All rights reserved.</p>
+                    <p class="mb-0">&copy; <?php echo date('Y'); ?> Sewa Kendaraan. Project UAS</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p class="mb-0">NIM Terakhir: <strong>GANJIL</strong></p>
+                    <p class="mb-0">Informatika, Universitas Pelita Bangsa</p>
                 </div>
             </div>
         </div>
