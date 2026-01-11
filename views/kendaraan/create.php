@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $kapasitas = $_POST['kapasitas'];
     $harga_sewa = $_POST['harga_sewa'];
     
-    // Cek duplikat plat nomor
     $check_query = "SELECT id FROM kendaraan WHERE plat_nomor = :plat_nomor";
     $check_stmt = $db->prepare($check_query);
     $check_stmt->bindParam(':plat_nomor', $plat_nomor);
@@ -24,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($check_stmt->rowCount() > 0) {
         $error = "Nomor plat <strong>$plat_nomor</strong> sudah terdaftar!";
     } else {
-        // Logika Gambar
         $gambar = '';
         if (!empty($_FILES['gambar']['name'])) {
             $file_name = $_FILES['gambar']['name'];
@@ -37,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $allowed_ext = ['jpg', 'jpeg', 'png', 'gif'];
                 
                 if (in_array($file_ext, $allowed_ext)) {
-                    if ($file_size <= 2097152) { // 2MB
+                    if ($file_size <= 2097152) { 
                         $new_file_name = time() . '_' . uniqid() . '.' . $file_ext;
                         $upload_path = '../../assets/img/' . $new_file_name;
                         
@@ -56,13 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
         }
-
-        // Jika tidak ada gambar yang diupload, gunakan default
         if (empty($gambar)) {
             $gambar = 'default.jpg';
         }
-        
-        // Simpan ke Database jika tidak ada error upload
         if (!isset($error)) {
             $query = "INSERT INTO kendaraan (jenis, merk, model, plat_nomor, tahun_produksi, kapasitas, harga_sewa, gambar, status) 
                       VALUES (:jenis, :merk, :model, :plat_nomor, :tahun_produksi, :kapasitas, :harga_sewa, :gambar, 'tersedia')";
@@ -86,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $error = "Error: " . $e->getMessage();
             }
         }
-    } // Penutup else dari cek plat nomor
+    } 
 }
 
 $page_title = "Tambah Kendaraan";
